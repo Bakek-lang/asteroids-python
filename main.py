@@ -65,23 +65,39 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        for obj in updatable:
-            obj.update(dt)
+            if current_state == GameState.MENU:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if start_button_rect.collidepoint(event.pos):
+                        current_state = GameState.PLAYING
+            
+            elif current_state == GameState.GAME_OVER:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if restart_button_rect.collidepoint(event.pos):
+                        return main()
 
-        for asteroid in asteroids:
-            if asteroid.collision(player):
-                print("Game over!")
-                sys.exit()
-            for shot in shots:
-                if asteroid.collision(shot):
-                    asteroid.split()
-                    shot.kill()
+        if current_state == GameState.PLAYING:
+            for obj in updatable:
+                obj.update(dt)
+
+            for asteroid in asteroids:
+                if asteroid.collision(player):
+                    print("Game over!")
+                    sys.exit()
+
+                for shot in shots:
+                    if asteroid.collision(shot):
+                        asteroid.split()
+                        shot.kill()
 
 
         screen.fill("black")
 
         if current_state == GameState.MENU:
             draw_menu(screen)
+        if current_state == GameState.PLAYING:
+            draw_game(screen, drawable)
+        elif current_state == GameState.GAME_OVER:
+            draw_game_over(screen)
 
         # for obj in drawable:
         #    obj.draw(screen)
