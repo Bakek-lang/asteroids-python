@@ -5,13 +5,21 @@ from player import Player
 from asteroidfield import AsteroidField
 from asteroid import Asteroid
 from bullets import Shot
+from enum import Enum, auto
 
+
+class GameState(Enum):
+    MENU = auto()
+    PLAYING = auto()
+    GAME_OVER = auto()
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     pygame.display.set_caption("Asteroids(Bubble) Game") 
+
+    current_state = GameState.MENU
 
     print("Starting asteroids!")
     updatable = pygame.sprite.Group()
