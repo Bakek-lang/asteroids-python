@@ -13,6 +13,28 @@ class GameState(Enum):
     PLAYING = auto()
     GAME_OVER = auto()
 
+# drawing functions
+
+def draw_menu(screen):
+    screen.fill((0,0,0))
+    font = pygame.font.Font(None, 74)
+    text = font.render('Click to Start', True, (255, 255, 255))
+    global start_button_rect
+    start_button_rect = text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+    screen.blit(text, start_button_rect)
+
+def draw_game(screen, drawable):
+    screen.fill((0, 0, 0))
+    for obj in drawable:
+        obj.draw(screen)
+
+def draw_game_over(screen):
+    screen.fill((0, 0, 0))
+    font = pygame.font.Font(None, 74)
+    text = font.render('Game Over! Click here to Restart', True, (255, 255, 255))
+    global restart_button_rect
+    restart_button_rect = text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -58,8 +80,11 @@ def main():
 
         screen.fill("black")
 
-        for obj in drawable:
-            obj.draw(screen)
+        if current_state == GameState.MENU:
+            draw_menu(screen)
+
+        # for obj in drawable:
+        #    obj.draw(screen)
 
         pygame.display.flip()
 
