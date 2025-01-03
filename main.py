@@ -1,4 +1,3 @@
-import sys
 import pygame
 from constants import *
 from player import Player
