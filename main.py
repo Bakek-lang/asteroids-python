@@ -31,9 +31,10 @@ def draw_game(screen, drawable):
 def draw_game_over(screen):
     screen.fill((0, 0, 0))
     font = pygame.font.Font(None, 74)
-    text = font.render('Game Over! Click here to Restart', True, (255, 255, 255))
+    text = font.render('Game Over! Click to return to START', True, (255, 255, 255))
     global restart_button_rect
     restart_button_rect = text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+    screen.blit(text, restart_button_rect)
 
 def main():
     pygame.init()
@@ -81,8 +82,7 @@ def main():
 
             for asteroid in asteroids:
                 if asteroid.collision(player):
-                    print("Game over!")
-                    sys.exit()
+                    current_state = GameState.GAME_OVER
 
                 for shot in shots:
                     if asteroid.collision(shot):
@@ -98,9 +98,6 @@ def main():
             draw_game(screen, drawable)
         elif current_state == GameState.GAME_OVER:
             draw_game_over(screen)
-
-        # for obj in drawable:
-        #    obj.draw(screen)
 
         pygame.display.flip()
 
